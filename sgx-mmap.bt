@@ -1,0 +1,7 @@
+#include <linux/fs.h>
+
+k:do_mmap
+/strncmp(str(((struct file *)arg0)->f_path.dentry->d_name.name), "sgx_enclave", 11) == 0/
+{
+	printf("mmap: addr=0x%016x, len=0x%016x, prot=0x%02x\n", arg1, arg2, arg3);
+}

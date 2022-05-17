@@ -1,0 +1,7 @@
+#include <linux/fs.h>
+
+k:mprotect_fixup
+/strncmp(str(((struct vm_area_struct *)arg0)->vm_file->f_path.dentry->d_name.name), "sgx_enclave", 11) == 0/
+{
+	printf("mprotect: addr=0x%016x, len=0x%016x, prot=0x%02x\n", arg1, arg3 - arg2, arg4 & 0x7);
+}
