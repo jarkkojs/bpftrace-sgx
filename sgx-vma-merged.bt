@@ -1,0 +1,19 @@
+#include <linux/fs.h>
+
+k:vma_merge
+/strncmp(str(((struct vm_area_struct *)arg1)->vm_file->f_path.dentry->d_name.name), "sgx_enclave", 11) == 0/
+{
+	@merge[tid] = true;
+}
+
+kr:vma_merge /@merge[tid] && retval > 0/
+{
+	@merged = count();
+	delete(@merge[tid]);
+}
+
+kr:vma_merge /@merge[tid]/
+{
+	@unmerged = count();
+	delete(@merge[tid]);
+}
